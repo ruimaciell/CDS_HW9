@@ -1,5 +1,5 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException, Request, status
+from pydantic import BaseModel, ValidationError
 import joblib
 
 # Define a class for the input data
@@ -23,7 +23,7 @@ async def root():
 
 # Define the prediction endpoint
 @app.post("/predict")
-async def predict_speed(pokemon: PokemonInput):
+async def predict_speed(request: Request, pokemon: PokemonInput):
     try:
         # Extract data from request
         data = [pokemon.HP, pokemon.Attack, pokemon.Defense, pokemon.Sp_Atk, pokemon.Sp_Def]
@@ -33,6 +33,17 @@ async def predict_speed(pokemon: PokemonInput):
         
         # Return the prediction
         return {"predicted_speed": prediction[0]}
+    except ValidationError as e:
+        # If input data is invalid
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Input data validation error",
+            headers={"X-Error": "There was a problem with the input data"},
+        )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # For all other server-side errors
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e),
+        )
 
