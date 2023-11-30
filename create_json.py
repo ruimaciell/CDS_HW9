@@ -2,11 +2,11 @@ import json
 
 # Example input data
 data = {
-    "HP": 80,
-    "Attack": 100,
-    "Defense": 65,
-    "Sp_Atk": 70,
-    "Sp_Def": 10
+    "HP": 30,
+    "Attack": 70,
+    "Defense": 50,
+    "Sp_Atk": 60,
+    "Sp_Def": 30
 }
 
 # File path
