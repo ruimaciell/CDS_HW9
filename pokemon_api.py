@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request, status
 from pydantic import BaseModel, ValidationError
-import joblib
+import joblib 
 
 # Define a class for the input data
 class PokemonInput(BaseModel):
